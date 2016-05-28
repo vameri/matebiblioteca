@@ -8,7 +8,7 @@
 # - download is for downloading files uploaded in the db (does streaming)
 # -------------------------------------------------------------------------
 
-
+@auth.requires_login()
 def index():
     """
     example action using the internationalization operator T and flash
@@ -17,9 +17,44 @@ def index():
     if you need a simple wiki simply replace the two lines below with:
     return auth.wiki()
     """
-    response.flash = T("Hello World")
-    return dict(message=T('Welcome to web2py!'))
+    response.flash = T("Oi otario!")
+    
+    return locals ()
+    
+#@auth.requires_membership('admin')
+def cadastrar_livro():
+    response.flash = T('Cadastrar livro')
+    
+    #form = SQLFORM (db.livros)
+    form = crud.create(db.livros)
 
+    return locals()
+
+    #@auth.requires_membership('admin')
+def alterar_livro():
+    response.flash = T('Cadastrar livro')
+    
+    id_livro = request.args(0)
+
+    form = SQLFORM (db.livros, record = id_livro, deletable = True)
+
+    if  form.process ().accepted:
+        response.flash = 'livro alterado criado'
+    elif form.errors:
+        response.flash = 'deu o erro ' + form.errors
+    else:
+        response.flash = 'deu merda'
+
+    return locals()
+
+#@auth.requires_membership('admin')
+def listar_livros():
+    response.flash = T('Listar livros')
+
+    #livros = db(db.livros.id > 0).select()
+    livros = SQLFORM.grid(db.livros)
+
+    return locals()
 
 def user():
     """

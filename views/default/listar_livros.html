@@ -1,0 +1,12 @@
+{{extend 'layout.html'}}
+
+
+<div class="row" style="margin-left: 300px" >
+	<!--{ for livro in livros: }
+		<h2>{=livro.titulo } - <a href="{=URL(c='default' , f='alterar_livro', args= livro.id)}"> Alterar </a> - ver</h2>
+	{{pass}}
+	-->
+	{{=livros}}
+
+
+  </div>

@@ -80,12 +80,13 @@ response.form_label_separator = myconf.get('forms.separator') or ''
 # (more options discussed in gluon/tools.py)
 # -------------------------------------------------------------------------
 
-from gluon.tools import Auth, Service, PluginManager
+from gluon.tools import Auth, Service, PluginManager, Crud
 
 # host names must be a list of allowed host names (glob syntax allowed)
 auth = Auth(db, host_names=myconf.get('host.names'))
 service = Service()
 plugins = PluginManager()
+crud = Crud(db)
 
 # -------------------------------------------------------------------------
 # create all tables needed by auth if not custom tables
@@ -108,6 +109,16 @@ mail.settings.ssl = myconf.get('smtp.ssl') or False
 auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
+
+auth.settings.actions_disabled.append('register')
+
+db.define_table('livros',
+    Field('titulo', 'string'),
+    Field('descricao', 'text'),
+    Field('ano', 'datetime'),
+    Field('capa','upload')
+    )
+
 
 # -------------------------------------------------------------------------
 # Define your tables below (or better in another model file) for example
